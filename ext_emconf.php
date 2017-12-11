@@ -10,7 +10,7 @@
  * "version" and "dependencies" must not be touched!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
 	'title' => 'Highlight editable pages in backend page tree',
 	'description' => 'Highlights pages in the page tree that the user has edit rights for.',
 	'category' => 'be',
@@ -20,23 +20,21 @@ $EM_CONF[$_EXTKEY] = array(
 	'shy' => '',
 	'priority' => '',
 	'module' => '',
-	'state' => 'beta',
+	'state' => 'stable',
 	'internal' => '',
 	'uploadfolder' => '0',
 	'createDirs' => '',
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'version' => '1.0.0',
-	'constraints' => array(
-		'depends' => array(
-			'typo3' => '6.0.0-6.2.99',
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
-);
-
-?>
+	'version' => '1.1.0',
+	'constraints' => [
+		'depends' => [
+			'typo3' => '8.7.0-8.7.99',
+        ],
+		'conflicts' => [
+        ],
+		'suggests' => [
+        ],
+    ],
+];
