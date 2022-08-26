@@ -3,9 +3,16 @@
 	"type": "typo3-cms-extension",
 	"description": "Highlight editable pages in backend page tree",
 	"homepage": "https://github.com/visol/ext-treehighlight",
-	"license": ["GPL-2.0+"],
+	"license": [
+		"GPL-2.0-or-later"
+	],
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "treehighlight"
+		}
+	},
 	"require": {
-		"typo3/cms-core": "^8.7"
+		"typo3/cms-core": "^11.5"
 	},
 	"autoload": {
 		"psr-4": {
