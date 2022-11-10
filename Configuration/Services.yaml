@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  Visol\Treehighlight\EventListeners\CalculateBackgroundEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'tree-highlight-background-color'
+        event: TYPO3\CMS\Backend\Controller\Event\AfterTreeItemInitializedEvent
