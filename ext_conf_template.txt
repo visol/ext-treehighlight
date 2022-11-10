@@ -1,0 +1,2 @@
+# cat=modules//; type=string; label= Background color: Define the background color for a tree item
+backgroundColor = rgba(212,236,212,0.6)

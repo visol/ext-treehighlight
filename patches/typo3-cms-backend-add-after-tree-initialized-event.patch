@@ -1,0 +1,127 @@
+diff --git a/Classes/Controller/Event/AfterTreeItemInitializedEvent.php b/Classes/Controller/Event/AfterTreeItemInitializedEvent.php
+new file mode 100644
+index 000000000000..cb8a054dd45b
+--- /dev/null
++++ b/Classes/Controller/Event/AfterTreeItemInitializedEvent.php
+@@ -0,0 +1,73 @@
++<?php
++
++declare(strict_types=1);
++
++/*
++ * This file is part of the TYPO3 CMS project.
++ *
++ * It is free software; you can redistribute it and/or modify it under
++ * the terms of the GNU General Public License, either version 2
++ * of the License, or any later version.
++ *
++ * For the full copyright and license information, please read the
++ * LICENSE.txt file that was distributed with this source code.
++ *
++ * The TYPO3 project - inspiring people to share!
++ */
++
++namespace TYPO3\CMS\Backend\Controller\Event;
++
++/**
++ * Event to listen to after the tree item has been initialized
++ */
++final class AfterTreeItemInitializedEvent
++{
++
++    protected array $item;
++    protected array $page;
++    protected int $entryPoint;
++    protected int $depth;
++    protected array $inheritedData;
++
++    public function __construct(array $item, array $page, int $entryPoint, int $depth, array $inheritedData)
++    {
++        $this->item = $item;
++        $this->page = $page;
++        $this->entryPoint = $entryPoint;
++        $this->depth = $depth;
++        $this->inheritedData = $inheritedData;
++    }
++
++    public function getItem(): array
++    {
++        return $this->item;
++    }
++
++    public function setItem(array $item): AfterTreeItemInitializedEvent
++    {
++        $this->item = $item;
++        return $this;
++    }
++
++
++    public function getPage(): array
++    {
++        return $this->page;
++    }
++
++    public function getEntryPoint(): int
++    {
++        return $this->entryPoint;
++    }
++
++    public function getDepth(): int
++    {
++        return $this->depth;
++    }
++
++    public function getInheritedData(): array
++    {
++        return $this->inheritedData;
++    }
++
++}
+diff --git a/Classes/Controller/Page/TreeController.php b/Classes/Controller/Page/TreeController.php
+index 4b4fcc3765e1..3b1437238984 100644
+--- a/Classes/Controller/Page/TreeController.php
++++ b/Classes/Controller/Page/TreeController.php
+@@ -17,9 +17,11 @@ declare(strict_types=1);
+ 
+ namespace TYPO3\CMS\Backend\Controller\Page;
+ 
++use Psr\EventDispatcher\EventDispatcherInterface;
+ use Psr\Http\Message\ResponseInterface;
+ use Psr\Http\Message\ServerRequestInterface;
+ use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
++use TYPO3\CMS\Backend\Controller\Event\AfterTreeItemInitializedEvent;
+ use TYPO3\CMS\Backend\Routing\UriBuilder;
+ use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
+ use TYPO3\CMS\Backend\Utility\BackendUtility;
+@@ -122,6 +124,7 @@ class TreeController
+     protected array $alternativeEntryPoints = [];
+ 
+     protected UriBuilder $uriBuilder;
++    protected EventDispatcherInterface $eventDispatcher;
+ 
+     /**
+      * Constructor to set up common objects needed in various places.
+@@ -130,6 +133,7 @@ class TreeController
+     {
+         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
++        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+     }
+ 
+     protected function initializeConfiguration(ServerRequestInterface $request)
+@@ -455,6 +459,15 @@ class TreeController
+             }
+         }
+ 
++        $event = $this->eventDispatcher->dispatch(
++            new AfterTreeItemInitializedEvent($item, $page, $entryPoint, $depth, $inheritedData)
++        );
++
++        $item = $event->getItem();
++        if ($backgroundColor !== $item['backgroundColor']) {
++            $backgroundColor = $item['backgroundColor'];
++        }
++
+         $items[] = $item;
+         if (!$stopPageTree && is_array($page['_children']) && !empty($page['_children']) && ($depth < $this->levelsToFetch || $expanded)) {
+             $siblingsCount = count($page['_children']);
