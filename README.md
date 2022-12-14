@@ -18,3 +18,12 @@ Beware a patch must be applied in TYPO3 v11
 		}
 	},
 ```
+
+## Compatibility and Maintenance
+
+This package is currently maintained for the following versions:
+
+| TYPO3 Version         | Package Version | Branch  | Maintained    |
+|-----------------------|-----------------|---------|---------------|
+| TYPO3 11.5.x          | 2.x             | master  | Yes           |
+| TYPO3 8.7.x           | 1.1.x           | -       | No            |
