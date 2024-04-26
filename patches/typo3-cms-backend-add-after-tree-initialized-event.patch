@@ -118,7 +118,7 @@ index 4b4fcc3765e1..3b1437238984 100644
 +        );
 +
 +        $item = $event->getItem();
-+        if ($backgroundColor !== $item['backgroundColor']) {
++        if (isset($item['backgroundColor']) && $backgroundColor !== $item['backgroundColor']) {
 +            $backgroundColor = $item['backgroundColor'];
 +        }
 +
