@@ -4,6 +4,7 @@ namespace Visol\Treehighlight\EventListeners;
 
 
 use TYPO3\CMS\Backend\Controller\Event\AfterTreeItemInitializedEvent;
+use TYPO3\CMS\Backend\Dto\Tree\Label\Label;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -22,7 +23,11 @@ class CalculateBackgroundEventListener
             if (in_array($page['perms_groupid'], $backendUserGroups) || (int)$page['perms_userid'] === $this->getBackendUser()->user['uid']) {
                 // user has access by group permissions or is the owner of the page
                 $item = $event->getItem();
-                $item['backgroundColor'] = $this->getBackgroundColor();
+                $item['labels'][] = new Label(
+                    label: $item['name'],
+                    color: $this->getBackgroundColor(),
+                );
+
                 $event->setItem($item);
             }
         }

@@ -1,9 +1,8 @@
 diff --git a/Classes/Controller/Event/AfterTreeItemInitializedEvent.php b/Classes/Controller/Event/AfterTreeItemInitializedEvent.php
 new file mode 100644
-index 000000000000..cb8a054dd45b
---- /dev/null
-+++ b/Classes/Controller/Event/AfterTreeItemInitializedEvent.php
-@@ -0,0 +1,73 @@
+--- /dev/null	(date 1753284686302)
++++ b/Classes/Controller/Event/AfterTreeItemInitializedEvent.php	(date 1753284686302)
+@@ -0,0 +1,66 @@
 +<?php
 +
 +declare(strict_types=1);
@@ -33,15 +32,13 @@ index 000000000000..cb8a054dd45b
 +    protected array $page;
 +    protected int $entryPoint;
 +    protected int $depth;
-+    protected array $inheritedData;
 +
-+    public function __construct(array $item, array $page, int $entryPoint, int $depth, array $inheritedData)
++    public function __construct(array $item, array $page, int $entryPoint, int $depth)
 +    {
 +        $this->item = $item;
 +        $this->page = $page;
 +        $this->entryPoint = $entryPoint;
 +        $this->depth = $depth;
-+        $this->inheritedData = $inheritedData;
 +    }
 +
 +    public function getItem(): array
@@ -71,57 +68,28 @@ index 000000000000..cb8a054dd45b
 +        return $this->depth;
 +    }
 +
-+    public function getInheritedData(): array
-+    {
-+        return $this->inheritedData;
-+    }
-+
 +}
 diff --git a/Classes/Controller/Page/TreeController.php b/Classes/Controller/Page/TreeController.php
-index 4b4fcc3765e1..3b1437238984 100644
 --- a/Classes/Controller/Page/TreeController.php
 +++ b/Classes/Controller/Page/TreeController.php
-@@ -17,9 +17,11 @@ declare(strict_types=1);
- 
- namespace TYPO3\CMS\Backend\Controller\Page;
- 
-+use Psr\EventDispatcher\EventDispatcherInterface;
- use Psr\Http\Message\ResponseInterface;
+@@ -22,6 +22,7 @@
  use Psr\Http\Message\ServerRequestInterface;
- use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
+ use TYPO3\CMS\Backend\Attribute\AsController;
+ use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 +use TYPO3\CMS\Backend\Controller\Event\AfterTreeItemInitializedEvent;
- use TYPO3\CMS\Backend\Routing\UriBuilder;
- use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
- use TYPO3\CMS\Backend\Utility\BackendUtility;
-@@ -122,6 +124,7 @@ class TreeController
-     protected array $alternativeEntryPoints = [];
- 
-     protected UriBuilder $uriBuilder;
-+    protected EventDispatcherInterface $eventDispatcher;
- 
-     /**
-      * Constructor to set up common objects needed in various places.
-@@ -130,6 +133,7 @@ class TreeController
-     {
-         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
-     }
- 
-     protected function initializeConfiguration(ServerRequestInterface $request)
-@@ -455,6 +459,15 @@ class TreeController
+ use TYPO3\CMS\Backend\Dto\Tree\Label\Label;
+ use TYPO3\CMS\Backend\Dto\Tree\PageTreeItem;
+ use TYPO3\CMS\Backend\Dto\Tree\TreeItem;
+@@ -443,6 +444,12 @@
              }
          }
- 
+
 +        $event = $this->eventDispatcher->dispatch(
-+            new AfterTreeItemInitializedEvent($item, $page, $entryPoint, $depth, $inheritedData)
++            new AfterTreeItemInitializedEvent($item, $page, $entryPoint, $depth)
 +        );
 +
 +        $item = $event->getItem();
-+        if (isset($item['backgroundColor']) && $backgroundColor !== $item['backgroundColor']) {
-+            $backgroundColor = $item['backgroundColor'];
-+        }
 +
          $items[] = $item;
-         if (!$stopPageTree && is_array($page['_children']) && !empty($page['_children']) && ($depth < $this->levelsToFetch || $expanded)) {
-             $siblingsCount = count($page['_children']);
+         if (!$stopPageTree && is_array($page['_children']) && !empty($page['_children']) && ($depth < $this->levelsToFetch || $this->expandAllNodes)) {
+             $items[key($items)]['loaded'] = true;
