@@ -4,8 +4,8 @@ services:
     autoconfigure: true
     public: true
 
-  Visol\Treehighlight\EventListeners\CalculateBackgroundEventListener:
+  Visol\Treehighlight\EventListeners\HighlightPageTreeEditRights:
     tags:
       - name: event.listener
-        identifier: 'tree-highlight-background-color'
-        event: TYPO3\CMS\Backend\Controller\Event\AfterTreeItemInitializedEvent
+        identifier: 'treehighlight/backend/hilight-editable-pages'
+        event: TYPO3\CMS\Backend\EventListeners\HighlightPageTreeEditRights
