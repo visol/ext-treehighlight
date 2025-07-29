@@ -7,18 +7,6 @@ The main disadvantage is that the user doesn't know which pages he can edit. Thi
 
 The indicator is not displayed for admin users since they have access to all pages.
 
-The provide patch must be applied in you site package by adding the following to your main `composer.json` file:
-
-```
-	"extra": {
-		"patches": {
-			"typo3/cms-backend": {
-				"[FEATURE]: Add edit right label to page tree": "vendor/visol/treehighlight/patches/typo3-cms-backend-add-after-tree-initialized-event.patch"
-			}
-		}
-	},
-```
-
 For better visual distinction, the tree item parent is styled and overwritten by the additional stylesheet
 [Resources/Public/Stylesheets/Backend/pageTree.css](./Resources/Public/Stylesheets/Backend/pageTree.css). Add `"visol/treehighlight": "*"` to the require block of your site package composer.json, to ensure the proper loading order.
 
