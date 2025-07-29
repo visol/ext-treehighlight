@@ -2,15 +2,21 @@
   --access-allowed-bg-color: rgb(173, 204, 173);
   --access-allowed-label-color: rgb(212, 236, 212);
   --access-allowed-text-color: rgb(26, 26, 26);
+  --access-allowed-selected-bg-color: rgb(130, 153, 130);
 
-  @media (prefers-color-scheme: dark) {
-    --access-allowed-bg-color: rgb(36, 51, 36);
-    --access-allowed-label-color: rgb(173, 204, 173);
-    --access-allowed-text-color: rgb(173, 204, 173);
-  }
+  --access-allowed-bg-color-dark: rgb(36, 51, 36);
+  --access-allowed-label-color-dark: rgb(173, 204, 173);
+  --access-allowed-text-color-dark: rgb(173, 204, 173);
+  --access-allowed-selected-bg-color-dark: rgb(36, 51, 36);
+
 }
 .node:has(.node-label) {
-  --tree-node-bg: var(--access-allowed-bg-color);
+  --tree-node-bg: light-dark(var(--access-allowed-bg-color), var(--access-allowed-bg-color-dark));
+  border-radius: 0;
+}
+.node.node-selected:has(.node-label) {
+  --tree-node-bg: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-selected-bg-color-dark));
+  --tree-node-border-color: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-selected-bg-color-dark)) !important;
   border-radius: 0;
 }
 .node .node-label {
@@ -18,12 +24,32 @@
   bottom: 0;
   border-radius: 0;
   inset-inline-start: 0;
-  background-color: var(--access-allowed-label-color) !important;
+  background-color: light-dark(var(--access-allowed-label-color),var(--access-allowed-label-color-dark)) !important;
 }
 .node:has(.node-label) .node-contentlabel {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  color: var(--access-allowed-text-color) !important;
+  color: light-dark(var(--access-allowed-text-color,var(--access-allowed-text-color-dark))) !important;
+}
+.node:has(.node-label) .node-toggle {
+  color: light-dark(var(--access-allowed-text-color),var(--access-allowed-text-color-dark)) !important;
 }
 
+.node.node-selected:has(.node-label) {
+  background-color: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-selected-bg-color)) !important;
+  color: #ffffff !important;
+}
+.node.node-selected:has(.node-label) .node-contentlabel {
+  color: #ffffff !important;
+}
+.node:has(.node-label) .node-treeline {
+  color: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-label-color-dark)) !important;
+  opacity: 0.5;
+}
+.node.node-selected:has(.node-label) .node-treeline {
+  color: #ffffff !important;
+  opacity: 1;
+}
 
+.node.node-selected:has(.node-label) .node-treelines+.node-toggle typo3-backend-icon {
+  background-color: light-dark(var(--access-allowed-selected-bg-color-dark),var(--access-allowed-selected-bg-color)) !important;
+  color: #ffffff !important;;
+}
