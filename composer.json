@@ -1,5 +1,6 @@
 {
 	"name": "visol/treehighlight",
+	"version": "3.0.0",
 	"type": "typo3-cms-extension",
 	"description": "Highlight editable pages in backend page tree",
 	"homepage": "https://github.com/visol/ext-treehighlight",
