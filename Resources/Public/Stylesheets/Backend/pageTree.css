@@ -1,0 +1,29 @@
+:root {
+  --access-allowed-bg-color: rgb(173, 204, 173);
+  --access-allowed-label-color: rgb(212, 236, 212);
+  --access-allowed-text-color: rgb(26, 26, 26);
+
+  @media (prefers-color-scheme: dark) {
+    --access-allowed-bg-color: rgb(36, 51, 36);
+    --access-allowed-label-color: rgb(173, 204, 173);
+    --access-allowed-text-color: rgb(173, 204, 173);
+  }
+}
+.node:has(.node-label) {
+  --tree-node-bg: var(--access-allowed-bg-color);
+  border-radius: 0;
+}
+.node .node-label {
+  top: 0;
+  bottom: 0;
+  border-radius: 0;
+  inset-inline-start: 0;
+  background-color: var(--access-allowed-label-color) !important;
+}
+.node:has(.node-label) .node-contentlabel {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  color: var(--access-allowed-text-color) !important;
+}
+
+
