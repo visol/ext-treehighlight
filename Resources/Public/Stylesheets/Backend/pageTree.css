@@ -7,7 +7,7 @@
   --access-allowed-bg-color-dark: rgb(36, 51, 36);
   --access-allowed-label-color-dark: rgb(173, 204, 173);
   --access-allowed-text-color-dark: rgb(173, 204, 173);
-  --access-allowed-selected-bg-color-dark: rgb(36, 51, 36);
+  --access-allowed-selected-bg-color-dark: rgb(130, 153, 130);
 
 }
 .node:has(.node-label) {
@@ -34,7 +34,7 @@
 }
 
 .node.node-selected:has(.node-label) {
-  background-color: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-selected-bg-color)) !important;
+  background-color: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-selected-bg-color-dark)) !important;
   color: #ffffff !important;
 }
 .node.node-selected:has(.node-label) .node-contentlabel {
@@ -50,6 +50,6 @@
 }
 
 .node.node-selected:has(.node-label) .node-treelines+.node-toggle typo3-backend-icon {
-  background-color: light-dark(var(--access-allowed-selected-bg-color-dark),var(--access-allowed-selected-bg-color)) !important;
+  background-color: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-selected-bg-color-dark)) !important;
   color: #ffffff !important;;
 }
