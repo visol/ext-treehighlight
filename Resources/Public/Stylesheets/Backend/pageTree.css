@@ -1,3 +1,8 @@
+/*
+  overrides the default label color #188978", set in HighlightPageTreeEditRights
+  and styles the parent div.node in dark and light mode
+*/
+
 :root {
   --access-allowed-bg-color: rgb(173, 204, 173);
   --access-allowed-label-color: rgb(212, 236, 212);
@@ -8,48 +13,46 @@
   --access-allowed-label-color-dark: rgb(173, 204, 173);
   --access-allowed-text-color-dark: rgb(173, 204, 173);
   --access-allowed-selected-bg-color-dark: rgb(130, 153, 130);
-
 }
-.node:has(.node-label) {
+.node:has(.node-label[style*="background-color:#188978"]) {
   --tree-node-bg: light-dark(var(--access-allowed-bg-color), var(--access-allowed-bg-color-dark));
   border-radius: 0;
 }
-.node.node-selected:has(.node-label) {
+.node.node-selected:has(.node-label[style*="background-color:#188978"]) {
   --tree-node-bg: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-selected-bg-color-dark));
   --tree-node-border-color: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-selected-bg-color-dark)) !important;
   border-radius: 0;
 }
-.node .node-label {
+.node .node-label[style*="background-color:#188978"] {
   top: 0;
   bottom: 0;
   border-radius: 0;
   inset-inline-start: 0;
   background-color: light-dark(var(--access-allowed-label-color),var(--access-allowed-label-color-dark)) !important;
 }
-.node:has(.node-label) .node-contentlabel {
+.node:has(.node-label[style*="background-color:#188978"] ) .node-contentlabel {
   color: light-dark(var(--access-allowed-text-color,var(--access-allowed-text-color-dark))) !important;
 }
-.node:has(.node-label) .node-toggle {
+.node:has(.node-label[style*="background-color:#188978"]) .node-toggle {
   color: light-dark(var(--access-allowed-text-color),var(--access-allowed-text-color-dark)) !important;
 }
 
-.node.node-selected:has(.node-label) {
+.node.node-selected:has(.node-label[style*="background-color:#188978"] ) {
   background-color: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-selected-bg-color-dark)) !important;
   color: #ffffff !important;
 }
-.node.node-selected:has(.node-label) .node-contentlabel {
+.node.node-selected:has(.node-label[style*="background-color:#188978"] ) .node-contentlabel {
   color: #ffffff !important;
 }
-.node:has(.node-label) .node-treeline {
+.node:has(.node-label[style*="background-color:#188978"]) .node-treeline {
   color: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-label-color-dark)) !important;
   opacity: 0.5;
 }
-.node.node-selected:has(.node-label) .node-treeline {
+.node.node-selected:has(.node-label[style*="background-color:#188978"] ) .node-treeline {
   color: #ffffff !important;
   opacity: 1;
 }
-
-.node.node-selected:has(.node-label) .node-treelines+.node-toggle typo3-backend-icon {
+.node.node-selected:has(.node-label[style*="background-color:#188978"] ) .node-treelines+.node-toggle typo3-backend-icon {
   background-color: light-dark(var(--access-allowed-selected-bg-color),var(--access-allowed-selected-bg-color-dark)) !important;
   color: #ffffff !important;;
 }
