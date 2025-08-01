@@ -1,20 +1,17 @@
 <?php
 
-namespace Visol\Treehighlight\Backend\EventListener;
-
+namespace Visol\Treehighlight\Event\Listener;
 
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Dto\Tree\Label\Label;
-use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Backend\Dto\Tree\Status\StatusInformation;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-#[AsEventListener(
-    identifier: 'treehighlight/backend/hilight-editable-pages',
-)]
-final readonly class HighlightPageTreeEditRightsEventListener
+final class HighlightPageTreeEditRights
 {
     public function __invoke(AfterPageTreeItemsPreparedEvent $event): void
     {
@@ -35,11 +32,28 @@ final readonly class HighlightPageTreeEditRightsEventListener
                         input: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Granted',
                         fallback: 'Access granted'
                     );
-
+                    // further styling and overrides by treehighlight/Resources/Public/Stylesheets/Backend/pageTree.css
                     $item['labels'][] = new Label(
                         label: $labelTitle . ': ' . $labelGranted,
-                        color: $this->getBackgroundColor(),
+                        color: '#188978',
                         priority: 1
+                    );
+                } else {
+                    $labelTitle = $this->getLanguageService()->translateLabel(
+                        input: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:mlang_labels_tablabel',
+                        fallback: 'Edit Page Permissions'
+                    );
+                    $labelGranted = $this->getLanguageService()->translateLabel(
+                        input: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Denied',
+                        fallback: 'Access denied'
+                    );
+
+                    $item['statusInformation'][] = new StatusInformation(
+                        label: $labelTitle . ': ' . $labelGranted,
+                        severity: ContextualFeedbackSeverity::WARNING,
+                        priority: 0,
+                        icon: 'actions-lock',
+                        overlayIcon: '',
                     );
                 }
             }

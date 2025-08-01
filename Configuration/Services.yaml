@@ -1,11 +1,7 @@
 services:
-  _defaults:
-    autowire: true
-    autoconfigure: true
-    public: true
-
-  Visol\Treehighlight\EventListeners\HighlightPageTreeEditRights:
+  Visol\Treehighlight\Event\Listener\HighlightPageTreeEditRights:
     tags:
       - name: event.listener
-        identifier: 'treehighlight/backend/hilight-editable-pages'
-        event: TYPO3\CMS\Backend\EventListeners\HighlightPageTreeEditRights
+        identifier: 'ext-treehighlight/backend/highlight-editable-pages'
+        method: '__invoke'
+        event: TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent
