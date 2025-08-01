@@ -1,33 +1,29 @@
 treehighlight for TYPO3 CMS
 ===========================
 
-In big TYPO3 installations with many users that have access to several parts of the websites, using DB mounts for every part of the site a user has access to can be confusing for users. In this case it may be better to display all pages to the users (show permissions for everyone) but only grant rights to certain pages of the installation.
+In large sites, using DB mounts for granting edit rights, can lead to a random number of detached and multiplied entries in the file tree, which can become quite confusing for editors, having access to many different tree sections. In such cases **displaying all pages to all users** (show permissions for everyone) and **only granting edit rights to selected pages** is a sleek solution.
 
-The main disadvantage is that the user doesn't know which pages he can edit. This extensions checks if a user is the owner of a page or has permission to a page because he is a member of the group assigned to the page. In this case, it adds a green square in front of the page title in the page tree.
+To make those rights visible in the page tree, visol/treehighlight adds a colored label to all editable pages by `TYPO3\CMS\Backend\Dto\Tree\Label\Label` and, on pages without edit rights, a look icon by `TYPO3\CMS\Backend\Dto\Tree\Status\StatusInformation`.
 
-The indicator is not displayed for admin users since they have access to all pages.
+The label and its parent are styled and overwritten by [Resources/Public/Stylesheets/Backend/pageTree.css](./Resources/Public/Stylesheets/Backend/pageTree.css).
 
-For better visual distinction, the tree item parent is styled and overwritten by the additional stylesheet
-[Resources/Public/Stylesheets/Backend/pageTree.css](./Resources/Public/Stylesheets/Backend/pageTree.css). Add `"visol/treehighlight": "*"` to the require block of your site package composer.json, to ensure the proper loading order.
+#### Sidenotes
 
-```
-	"require": {
-		"visol/treehighlight": "*"
-	},
-	
-```
+* The indicator is not visible for admin users
+* The stylesheet overrides all labels having the inline style attribute `style="background-color:#188978"` set in HighlightPageTreeEditRights.
 
-> In theory, more labels could be added by other extensions. All added label titles are displayed in the tooltip of the item, but the color of the one with the highest priority will be used.
+#### Known issues
 
-## Background information
+* Since non editable pages may have editable subpages, the lock icon might be misleading at first glance. Feel free to submit a pull request to improve this.
+
+#### Background information
 
 https://docs.typo3.org/m/typo3/reference-coreapi/13.4/en-us/ApiOverview/Events/Events/Backend/AfterPageTreeItemsPreparedEvent.html
 
 
-
 ## Compatibility and Maintenance
 
-This package is currently maintained for the following versions:
+Available versions:
 
 | TYPO3 Version | Package Version | Branch | Maintained |
 |---------------|-----------------|--------|------------|
